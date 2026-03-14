@@ -15,6 +15,12 @@
 			"enabled": true
 		},
 		{
+            "key": "dog_mock_url",
+            "value": "https://5ea9837a-5e41-41be-866a-4db2b47602fe.mock.pstmn.io",
+            "type": "default",
+            "enabled": true
+        },
+		{
 			"key": "first_breed_id",
 			"value": "",
 			"type": "any",

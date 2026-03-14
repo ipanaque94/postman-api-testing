@@ -476,104 +476,94 @@
       "name": "Favourites",
       "item": [
         {
-          "name": "Add Favourites",
-          "item": [
+          "name": "PostAddfavourite",
+          "event": [
             {
-              "name": "PostAddfavourite",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
-                      "pm.test(\"✅ Favorito creado\", () => {\r",
-                      "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);\r",
-                      "});\r",
-                      "\r",
-                      "pm.test(\"📋 Response tiene ID\", () => {\r",
-                      "    const data = pm.response.json();\r",
-                      "    pm.expect(data).to.have.property(\"id\");\r",
-                      "    pm.environment.set(\"favourite_id\", data.id);\r",
-                      "    console.log(\"❤️ Favorito creado ID:\", data.id);\r",
-                      "});"
-                    ],
-                    "type": "text/javascript",
-                    "packages": {},
-                    "requests": {}
-                  }
-                }
-              ],
-              "request": {
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n    \"image_id\": \"{{random_image_id}}\"\r\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "{{dog_api_url}}/favourites",
-                  "host": [
-                    "{{dog_api_url}}"
-                  ],
-                  "path": [
-                    "favourites"
-                  ]
-                }
-              },
-              "response": []
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"✅ Favorito creado\", () => {\r",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"📋 Response tiene ID\", () => {\r",
+                  "    const data = pm.response.json();\r",
+                  "    pm.expect(data).to.have.property(\"id\");\r",
+                  "    pm.environment.set(\"favourite_id\", data.id);\r",
+                  "    console.log(\"❤️ Favorito creado ID:\", data.id);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
             }
-          ]
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"image_id\": \"{{random_image_id}}\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{dog_api_url}}/favourites",
+              "host": [
+                "{{dog_api_url}}"
+              ],
+              "path": [
+                "favourites"
+              ]
+            }
+          },
+          "response": []
         },
         {
-          "name": "DELETE Favourite",
-          "item": [
+          "name": "DeleteFavourite",
+          "event": [
             {
-              "name": "DeleteFavourite",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
-                      "pm.test(\"Favorito Eliminado\", () => {\r",
-                      "    pm.expect(pm.response.code).to.be.oneOf([200, 404]);\r",
-                      "});\r",
-                      "pm.test(\"Mensaje de Confirmacion\", () => {\r",
-                      "    const data = pm.response.json();\r",
-                      "    pm.expect(data).to.have.property(\"message\");\r",
-                      "    console.log(\"Respuesta:\",data.message);\r",
-                      "})"
-                    ],
-                    "type": "text/javascript",
-                    "packages": {},
-                    "requests": {}
-                  }
-                }
-              ],
-              "request": {
-                "method": "DELETE",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n    \"image_id\": \"{{random_image_id}}\"\r\n}"
-                },
-                "url": {
-                  "raw": "{{dog_api_url}}/favourites/{{favourite_id}}",
-                  "host": [
-                    "{{dog_api_url}}"
-                  ],
-                  "path": [
-                    "favourites",
-                    "{{favourite_id}}"
-                  ]
-                }
-              },
-              "response": []
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Favorito Eliminado\", () => {\r",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 404]);\r",
+                  "});\r",
+                  "pm.test(\"Mensaje de Confirmacion\", () => {\r",
+                  "    const data = pm.response.json();\r",
+                  "    pm.expect(data).to.have.property(\"message\");\r",
+                  "    console.log(\"Respuesta:\",JSON.stringify(data));\r",
+                  "})"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
             }
-          ]
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"image_id\": \"{{random_image_id}}\"\r\n}"
+            },
+            "url": {
+              "raw": "{{dog_api_url}}/favourites/{{favourite_id}}",
+              "host": [
+                "{{dog_api_url}}"
+              ],
+              "path": [
+                "favourites",
+                "{{favourite_id}}"
+              ]
+            }
+          },
+          "response": []
         }
       ],
       "description": "## Favourites\n\nTests para el endpoint /favourites.  \nFlujo completo: agrega favorito → verifica creación → elimina favorito.  \nRequiere `random_image_id` generado por el request Get random image."
