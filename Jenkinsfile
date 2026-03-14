@@ -13,6 +13,8 @@ pipeline {
             steps {
                 echo '📦 Instalando Newman y reporters...'
                 sh '''
+                    export npm_config_prefix=/var/jenkins_home/.npm-global
+                    export PATH=/var/jenkins_home/.npm-global/bin:$PATH
                     npm install -g newman
                     npm install -g newman-reporter-htmlextra
                     echo "✅ Newman version: $(newman --version)"
@@ -24,6 +26,7 @@ pipeline {
             steps {
                 echo '🐶 Ejecutando tests de The Dog API...'
                 sh '''
+                    export PATH=/var/jenkins_home/.npm-global/bin:$PATH
                     mkdir -p reports
                     newman run dog-api/TheDogAPI.json \
                         --environment dog-api/ApiDogEnvironments.json \
@@ -41,6 +44,7 @@ pipeline {
             steps {
                 echo '🐱 Ejecutando tests de The Cat API...'
                 sh '''
+                    export PATH=/var/jenkins_home/.npm-global/bin:$PATH
                     newman run cat-api/TheCatAPI.json \
                         --environment cat-api/ApiCatEnvironments.json \
                         --iteration-data cat-api/cat_breeds.csv \
