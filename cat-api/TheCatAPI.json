@@ -1,0 +1,626 @@
+{
+  "info": {
+    "_postman_id": "2ee5457a-6e55-4b54-b8a5-4f00ac15c6c1",
+    "name": "The Cat API",
+    "description": "# The Cat API - Test Collection\n\n## Descripción\n\nColección de tests automatizados para The Cat API ([https://thecatapi.com](https://thecatapi.com)).  \nCubre los principales endpoints de la API incluyendo razas, imágenes, votos y favoritos.\n\n## Prerrequisitos\n\n- API Key válida de thecatapi.com\n    \n- Environment `ApiCatEnvironments` configurado con `cat_api_url` y `cat_api_key`\n    \n\n## Cómo ejecutar\n\n### En Postman\n\n1. Selecciona el environment `ApiCatEnvironments`\n    \n2. Clic en Run collection\n    \n\n### Con Newman\n\nnewman run \"D:\\\\PROYECTO POSTMAN API CAT\\\\TheCatAPI.json\" --environment \"D:\\\\PROYECTO POSTMAN API CAT\\\\ApiCatEnvironments.json\" --iteration-data \"D:\\\\PROYECTO POSTMAN API CAT\\\\cat_breeds.csv\"\n\n### Con HTML\n\nnewman run \"D:\\\\PROYECTO POSTMAN API CAT\\\\TheCatAPI.json\" --environment \"D:\\\\PROYECTO POSTMAN API CAT\\\\ApiCatEnvironments.json\" --iteration-data \"D:\\\\PROYECTO POSTMAN API CAT\\\\cat_breeds.csv\" -r htmlextra --reporter-htmlextra-export \"D:\\\\PROYECTO POSTMAN API CAT\\\\reporte-cat.html\"\n\n## Estructura\n\n- **Breeds** → Tests de razas (GET, búsqueda por nombre y por ID)\n    \n- **Images** → Tests de imágenes aleatorias y por raza\n    \n- **Votes** → Tests de creación y eliminación de votos\n    \n- **Favourites** → Tests de creación y eliminación de favoritos\n    \n- **Mock** → Tests contra servidor mock para pruebas sin dependencia externa\n    \n\n## Variables de ambiente requeridas\n\n| Variable | Descripción |\n| --- | --- |\n| `cat_api_url` | URL base de la API |\n| `cat_api_key` | API Key de autenticación |\n| `cat_mock_url` | URL del servidor mock |",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "43663671",
+    "_collection_link": "https://go.postman.co/collection/43663671-2ee5457a-6e55-4b54-b8a5-4f00ac15c6c1?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Breeds",
+      "item": [
+        {
+          "name": "Get all breeds",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"✅ Status 200 OK\", () => {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"⚡ Responde en menos de 2000ms\", () => {\r",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"📋 Response es un array\", () => {\r",
+                  "    pm.expect(pm.response.json()).to.be.an(\"array\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"📦 Array no está vacío\", () => {\r",
+                  "    pm.expect(pm.response.json().length).to.be.above(0);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"🐱 Todas las razas tienen propiedades requeridas\", () => {\r",
+                  "    const breeds = pm.response.json();\r",
+                  "    breeds.forEach(breed => {\r",
+                  "        pm.expect(breed).to.have.property(\"id\");\r",
+                  "        pm.expect(breed).to.have.property(\"name\");\r",
+                  "        pm.expect(breed).to.have.property(\"temperament\");\r",
+                  "    });\r",
+                  "});\r",
+                  "\r",
+                  "const firstBreed = pm.response.json()[0];\r",
+                  "pm.environment.set(\"first_breed_id\", firstBreed.id);\r",
+                  "pm.environment.set(\"first_breed_name\", firstBreed.name);\r",
+                  "console.log(\"💾 Raza guardada:\", firstBreed.name, \"| ID:\", firstBreed.id);"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{cat_api_url}}/breeds",
+              "host": [
+                "{{cat_api_url}}"
+              ],
+              "path": [
+                "breeds"
+              ]
+            },
+            "description": "Obtiene la lista completa de razas de perros disponibles en la API.\n\n**Método:** GET  \n**Auth:** API Key heredada de la colección  \n**Response:** Array de objetos con id, name, temperament, life_span, origin\n\n**Tests:**\n\n- Verifica status 200\n    \n- Verifica tiempo de respuesta menor a 2000ms\n    \n- Verifica que el response es un array no vacío\n    \n- Verifica que cada raza tiene las propiedades requeridas\n    \n\n**Variables generadas:**\n\n- `first_breed_id` → ID de la primera raza\n    \n- `first_breed_name` → Nombre de la primera raza"
+          },
+          "response": [
+            {
+              "name": "Get all breeds",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{cat_api_url}}/breeds",
+                  "host": [
+                    "{{cat_api_url}}"
+                  ],
+                  "path": [
+                    "breeds"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "",
+              "header": [],
+              "cookie": [
+                {
+                  "expires": "Invalid Date",
+                  "domain": "",
+                  "path": ""
+                }
+              ],
+              "body": "[\r\n  {\r\n    \"id\": \"abys\",\r\n    \"name\": \"Abyssinian\",\r\n    \"temperament\": \"Active, Energetic, Independent, Intelligent, Gentle\",\r\n    \"life_span\": \"14 - 15\"\r\n  },\r\n  {\r\n    \"id\": \"aege\",\r\n    \"name\": \"Aegean\",\r\n    \"temperament\": \"Affectionate, Social, Intelligent, Playful, Active\",\r\n    \"life_span\": \"9 - 12\"\r\n  }\r\n]"
+            }
+          ]
+        },
+        {
+          "name": "Get breeds by ID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"✅ Status 200 OK\", () => {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"⚡ Responde en menos de 2000ms\", () => {\r",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"🐱 Breed tiene propiedades requeridas\", () => {\r",
+                  "    const breed = pm.response.json();\r",
+                  "    pm.expect(breed).to.have.property(\"id\");\r",
+                  "    pm.expect(breed).to.have.property(\"name\");\r",
+                  "    pm.expect(breed).to.have.property(\"temperament\");\r",
+                  "    pm.expect(breed).to.have.property(\"life_span\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"🐱 Breed ID coincide con el solicitado\", () => {\r",
+                  "    const breed = pm.response.json();\r",
+                  "    const savedId = pm.environment.get(\"first_breed_id\");\r",
+                  "    pm.expect(breed.id).to.eql(savedId);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{cat_api_url}}/breeds/{{first_breed_id}}",
+              "host": [
+                "{{cat_api_url}}"
+              ],
+              "path": [
+                "breeds",
+                "{{first_breed_id}}"
+              ]
+            },
+            "description": "Obtiene el detalle de una raza específica usando el ID guardado por Get all breeds.\n\n**Método:** GET  \n**Auth:** API Key heredada de la colección  \n**Depende de:** Get all breeds (usa `first_breed_id`)  \n**Response:** Objeto con detalle completo de la raza"
+          },
+          "response": []
+        },
+        {
+          "name": "Get search by name_con CSV",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"✅ Status 200 OK\", () => {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"📋 Retorna al menos un resultado\", () => {\r",
+                  "    const data = pm.response.json();\r",
+                  "    pm.expect(data).to.be.an(\"array\");\r",
+                  "    pm.expect(data.length).to.be.above(0);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"🔍 Resultado contiene nombre buscado\", () => {\r",
+                  "    const data = pm.response.json();\r",
+                  "    const breedName = pm.iterationData.get(\"breed_name\") || pm.environment.get(\"breed_name\");\r",
+                  "    pm.expect(data[0].name.toLowerCase()).to.include(breedName.toLowerCase());\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"⚡ Responde en menos de 2000ms\", () => {\r",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{cat_api_url}}/breeds/search?q={{breed_name}}",
+              "host": [
+                "{{cat_api_url}}"
+              ],
+              "path": [
+                "breeds",
+                "search"
+              ],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "{{breed_name}}"
+                }
+              ]
+            },
+            "description": "Busca razas por nombre usando datos del archivo CSV.\n\n**Método:** GET  \n**Auth:** API Key heredada de la colección  \n**Data driven:** Usa variable `breed_name` del archivo dog_breeds.csv  \n**Response:** Array de razas que coinciden con el nombre buscado"
+          },
+          "response": []
+        }
+      ],
+      "description": "Tests para el endpoint /breeds.  \nVerifica listado completo de razas, búsqueda por ID y búsqueda por nombre.  \nLos tests validan estructura del response, propiedades requeridas y tiempo de respuesta."
+    },
+    {
+      "name": "Images",
+      "item": [
+        {
+          "name": "Get random image",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"✅ Status 200 OK\", () => {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"🖼️ Tiene URL de imagen\", () => {\r",
+                  "    const data = pm.response.json();\r",
+                  "    pm.expect(data[0]).to.have.property(\"url\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"🔗 URL es válida\", () => {\r",
+                  "    const url = pm.response.json()[0].url;\r",
+                  "    pm.expect(url).to.match(/^https?:\\/\\/.+/);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"⚡ Responde en menos de 2000ms\", () => {\r",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+                  "});\r",
+                  "\r",
+                  "pm.environment.set(\"random_image_id\", pm.response.json()[0].id);\r",
+                  "console.log(\"🖼️ Image ID guardado:\", pm.environment.get(\"random_image_id\"));"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{cat_api_url}}/images/search",
+              "host": [
+                "{{cat_api_url}}"
+              ],
+              "path": [
+                "images",
+                "search"
+              ]
+            },
+            "description": "Obtiene una imagen aleatoria de cualquier raza.\n\n**Método:** GET  \n**Auth:** API Key heredada de la colección  \n**Response:** Array con objeto de imagen incluyendo URL\n\n**Variables generadas:**\n\n- `random_image_id` → ID de la imagen para usar en Votes y Favourites"
+          },
+          "response": []
+        },
+        {
+          "name": "Get image by breed",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"✅ Status 200 OK\", () => {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"⚡ Responde en menos de 2000ms\", () => {\r",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"🖼️ Response es un array\", () => {\r",
+                  "    pm.expect(pm.response.json()).to.be.an(\"array\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"🖼️ Tiene URL de imagen si hay resultados\", () => {\r",
+                  "    const data = pm.response.json();\r",
+                  "    if (data.length > 0 && data[0]) {\r",
+                  "        pm.expect(data[0]).to.have.property(\"url\");\r",
+                  "        pm.environment.set(\"last_image_url\", data[0].url);\r",
+                  "        console.log(\"🖼️ Imagen obtenida:\", data[0].url);\r",
+                  "    } else {\r",
+                  "        console.log(\"⚠️ Sin imágenes para breed_id:\", pm.environment.get(\"random_breed_id\"));\r",
+                  "    }\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{cat_api_url}}/images/search?breed_ids={{random_breed_id}}",
+              "host": [
+                "{{cat_api_url}}"
+              ],
+              "path": [
+                "images",
+                "search"
+              ],
+              "query": [
+                {
+                  "key": "breed_ids",
+                  "value": "{{random_breed_id}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "description": "## Images\n\nTests para el endpoint /images.  \nVerifica obtención de imágenes aleatorias e imágenes filtradas por raza.  \nGuarda el ID de imagen en `random_image_id` para uso en Votes y Favourites."
+    },
+    {
+      "name": "Votes",
+      "item": [
+        {
+          "name": "Post a Vote",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"✅ Voto creado\", () => {\r",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"📋 Response tiene ID del voto\", () => {\r",
+                  "    const data = pm.response.json();\r",
+                  "    pm.expect(data).to.have.property(\"id\");\r",
+                  "    pm.environment.set(\"vote_id\", data.id);\r",
+                  "    console.log(\"🗳️ Voto creado ID:\", data.id);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"image_id\": \"{{random_image_id}}\",\r\n    \"value\": 1\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{cat_api_url}}/votes",
+              "host": [
+                "{{cat_api_url}}"
+              ],
+              "path": [
+                "votes"
+              ]
+            },
+            "description": "Crea un voto positivo para una imagen aleatoria.\n\n**Método:** POST  \n**Auth:** API Key heredada de la colección  \n**Depende de:** Get random image (usa `random_image_id`)  \n**Body:** { \"image_id\": \"{{random_image_id}}\", \"value\": 1 }\n\n**Variables generadas:**\n\n- `vote_id` → ID del voto para eliminarlo después"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Vote",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"✅ Voto eliminado\", () => {\r",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 404]);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"📋 Mensaje de confirmación\", () => {\r",
+                  "    const data = pm.response.json();\r",
+                  "    pm.expect(data).to.have.property(\"message\");\r",
+                  "    console.log(\"🗑️ Respuesta:\", data.message);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{cat_api_url}}/votes/{{vote_id}}",
+              "host": [
+                "{{cat_api_url}}"
+              ],
+              "path": [
+                "votes",
+                "{{vote_id}}"
+              ]
+            },
+            "description": "Elimina el voto creado por Post a Vote.\n\n**Método:** DELETE  \n**Depende de:** Post a Vote (usa `vote_id`)  \n**Response:** Mensaje de confirmación"
+          },
+          "response": []
+        }
+      ],
+      "description": "## Votes\n\nTests para el endpoint /votes.  \nFlujo completo: crea un voto → verifica creación → elimina el voto.  \nRequiere `random_image_id` generado por el request Get random image."
+    },
+    {
+      "name": "Favourites",
+      "item": [
+        {
+          "name": "PostAddFavourite",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"✅ Favorito creado\", () => {\r",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"📋 Response tiene ID\", () => {\r",
+                  "    const data = pm.response.json();\r",
+                  "    pm.expect(data).to.have.property(\"id\");\r",
+                  "    pm.environment.set(\"favourite_id\", data.id);\r",
+                  "    console.log(\" Favorito creado ID:\", data.id);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"image_id\": \"{{random_image_id}}\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{cat_api_url}}/favourites",
+              "host": [
+                "{{cat_api_url}}"
+              ],
+              "path": [
+                "favourites"
+              ]
+            },
+            "description": "Agrega una imagen de gato a la lista de favoritos del usuario.\n\n**Método:** POST  \n**Auth:** API Key heredada de la colección  \n**Depende de:** Get random image (usa `random_image_id`)  \n**Body:** { \"image_id\": \"{{random_image_id}}\" }\n\n**Variables generadas:**\n\n- `favourite_id` → ID del favorito para eliminarlo después"
+          },
+          "response": []
+        },
+        {
+          "name": "DeleteFavourite",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"✅ Favorito eliminado\", () => {\r",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 404]);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"📋 Mensaje de confirmación\", () => {\r",
+                  "    const data = pm.response.json();\r",
+                  "    pm.expect(data).to.have.property(\"message\");\r",
+                  "    console.log(\"🗑️ Respuesta:\", data.message);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{cat_api_url}}/favourites/{{favourite_id}}",
+              "host": [
+                "{{cat_api_url}}"
+              ],
+              "path": [
+                "favourites",
+                "{{favourite_id}}"
+              ]
+            },
+            "description": "Elimina el favorito creado por PostAddFavourite.\n\n**Método:** DELETE  \n**Depende de:** PostAddFavourite (usa `favourite_id`)  \n**Response:** Mensaje de confirmación"
+          },
+          "response": []
+        }
+      ],
+      "description": "## Favourites\n\nTests para el endpoint /favourites.  \nFlujo completo: agrega favorito → verifica creación → elimina favorito.  \nRequiere `random_image_id` generado por el request Get random image."
+    },
+    {
+      "name": "Mock",
+      "item": [
+        {
+          "name": "Get Mock all breeds",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"✅ Mock responde 200\", () => {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"📋 Mock retorna array\", () => {\r",
+                  "    pm.expect(pm.response.json()).to.be.an(\"array\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"🐱 Mock tiene datos de razas\", () => {\r",
+                  "    const data = pm.response.json();\r",
+                  "    pm.expect(data[0]).to.have.property(\"name\");\r",
+                  "    pm.expect(data[0]).to.have.property(\"temperament\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{cat_mock_url}}/breeds",
+              "host": [
+                "{{cat_mock_url}}"
+              ],
+              "path": [
+                "breeds"
+              ]
+            },
+            "description": "Obtiene la lista de razas desde el servidor mock de Postman.\n\n**Método:** GET  \n**Auth:** No requiere autenticación  \n**URL:** `{{cat_mock_url}}/breeds`\n\nPermite ejecutar tests sin depender de la API real.  \nResponde con datos estáticos configurados en el Example de la colección."
+          },
+          "response": []
+        }
+      ],
+      "description": "## Mock\n\nTests contra el servidor mock de Postman.  \nPermite ejecutar tests sin depender de la API real.  \nÚtil para desarrollo cuando la API no está disponible."
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "value",
+        "value": "{{cat_api_key}}",
+        "type": "string"
+      },
+      {
+        "key": "key",
+        "value": "x-api-key",
+        "type": "string"
+      }
+    ]
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          "const randomBreedId = Math.floor(Math.random() * 10) + 1;\r",
+          "pm.environment.set(\"randomBreedId\", randomBreedId);\r",
+          "\r",
+          "const apiUrl =pm.environment.get(\"cat_api_url\");\r",
+          "const apiKey = pm.environment.get(\"cat_api_key\");\r",
+          "console.log(\"🐱 Cat API URL:\", apiUrl);\r",
+          "console.log(\"🔑 API Key:\", apiKey ? \"✅ Sí\" : \"❌ No\");\r",
+          "console.log(\"⏰ Ejecutado:\", new Date().toISOString());\r",
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ]
+}
