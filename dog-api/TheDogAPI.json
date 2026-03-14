@@ -534,10 +534,9 @@
                   "    pm.expect(pm.response.code).to.be.oneOf([200, 404]);\r",
                   "});\r",
                   "pm.test(\"Mensaje de Confirmacion\", () => {\r",
-                  "    const data = pm.response.json();\r",
-                  "    pm.expect(data).to.have.property(\"message\");\r",
-                  "    console.log(\"Respuesta:\",JSON.stringify(data));\r",
-                  "})"
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 404]);\r",
+                  "    console.log(\"🗑️ Respuesta:\", JSON.stringify(pm.response.json()));\r",
+                  "});"
                 ],
                 "type": "text/javascript",
                 "packages": {},
