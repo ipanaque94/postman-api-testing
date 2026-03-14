@@ -31,10 +31,11 @@ pipeline {
                     newman run dog-api/TheDogAPI.json \
                         --environment dog-api/ApiDogEnvironments.json \
                         --iteration-data dog-api/dog_breeds.csv \
-                        -r cli,htmlextra \
+                        -r cli,htmlextra,junit \
                         --reporter-htmlextra-export reports/reporte-dog.html \
                         --reporter-htmlextra-title "The Dog API - Test Report" \
                         --reporter-htmlextra-browserTitle "Dog API Tests" \
+                        --reporter-junit-export reports/junit-dog.xml \
                         || true
                 '''
             }
@@ -48,10 +49,11 @@ pipeline {
                     newman run cat-api/TheCatAPI.json \
                         --environment cat-api/ApiCatEnvironments.json \
                         --iteration-data cat-api/cat_breeds.csv \
-                        -r cli,htmlextra \
+                        -r cli,htmlextra,junit \
                         --reporter-htmlextra-export reports/reporte-cat.html \
                         --reporter-htmlextra-title "The Cat API - Test Report" \
                         --reporter-htmlextra-browserTitle "Cat API Tests" \
+                        --reporter-junit-export reports/junit-cat.xml \
                         || true
                 '''
             }
@@ -76,6 +78,13 @@ pipeline {
                     reportFiles: 'reporte-cat.html',
                     reportName: 'Cat API Test Report'
                 ])
+
+                echo '📋 Publicando resultados JUnit...'
+                junit(
+                    testResults: 'reports/junit-dog.xml,reports/junit-cat.xml',
+                    allowEmptyResults: true,
+                    skipPublishingChecks: true
+                )
             }
         }
     }

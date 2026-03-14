@@ -1,18 +1,19 @@
 # API Testing con Postman + Jenkins + Docker
 
-Automaticé las pruebas de dos APIs públicas usando Postman y Newman, 
+Automaticé las pruebas de dos APIs públicas usando Postman y Newman,
 integradas en un pipeline CI/CD con Jenkins corriendo en Docker.
 
-Este proyecto nació del curso de Postman de Free Range Testers y lo 
-llevé un paso más allá integrando todo con Jenkins y Docker para que 
+Este proyecto nació del curso de Postman de Free Range Testers y lo
+llevé un paso más allá integrando todo con Jenkins y Docker para que
 los tests corran automáticamente.
 
 ## ¿Qué probé?
 
-**The Dog API** y **The Cat API** — dos APIs públicas que manejan 
+**The Dog API** y **The Cat API** — dos APIs públicas que manejan
 información e imágenes de perros y gatos.
 
 Para cada API automaticé:
+
 - Obtener listado completo de razas
 - Buscar una raza por ID
 - Buscar razas por nombre (data-driven con CSV)
@@ -33,6 +34,7 @@ En total: **270 assertions ejecutadas en 10 iteraciones**.
 ## Cómo correrlo
 
 Necesitas Docker instalado. Luego:
+
 ```bash
 git clone https://github.com/ipanaque94/postman-api-testing
 cd postman-api-testing
@@ -44,6 +46,7 @@ Abre `http://localhost:9091` y corre el pipeline `postman-api-pipeline`.
 Los reportes HTML quedan publicados directamente en Jenkins.
 
 ## Para correrlo sin Docker
+
 ```bash
 npm install -g newman newman-reporter-htmlextra
 
@@ -62,9 +65,10 @@ newman run cat-api/TheCatAPI.json \
 
 ## Lo que aprendí
 
-Automatizar no es solo escribir tests — es asegurarte de que esos 
-tests corran solos, en cualquier máquina, sin depender de 
+Automatizar no es solo escribir tests — es asegurarte de que esos
+tests corran solos, en cualquier máquina, sin depender de
 configuraciones locales. Docker resolvió exactamente eso.
 
 ---
+
 **Enoc Ipanaque** — QA Automation Engineer
