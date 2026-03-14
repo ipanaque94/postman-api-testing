@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  jenkins:
+    build:
+      context: .
+      dockerfile: Dockerfile.jenkins
+    container_name: jenkins-postman
+    ports:
+      - "9091:8080"
+      - "50001:50000"
+    volumes:
+      - jenkins_postman_home:/var/jenkins_home
+    networks:
+      - jenkins-postman-net
+    restart: unless-stopped
+
+volumes:
+  jenkins_postman_home:
+
+networks:
+  jenkins-postman-net:
+    driver: bridge

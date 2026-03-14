@@ -1,0 +1,23 @@
+FROM jenkins/jenkins:lts
+
+USER root
+
+# Instalar Node.js y npm
+RUN apt-get update && apt-get install -y \
+    curl \
+    git \
+    && curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
+    && apt-get install -y nodejs \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Instalar Newman y reporter HTML
+RUN npm install -g newman
+RUN npm install -g newman-reporter-htmlextra
+
+# Verificar instalaciones
+RUN node --version
+RUN npm --version
+RUN newman --version
+
+USER jenkins
