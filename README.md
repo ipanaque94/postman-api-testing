@@ -50,17 +50,15 @@ Los reportes HTML quedan publicados directamente en Jenkins.
 ```bash
 npm install -g newman newman-reporter-htmlextra
 
-# Dog API
-newman run dog-api/TheDogAPI.json \
-  --environment dog-api/ApiDogEnvironments.json \
-  --iteration-data dog-api/dog_breeds.csv \
-  -r htmlextra --reporter-htmlextra-export reports/reporte-dog.html
+# CAT API
+newman run "D:\PROYECTO POSTMAN API CAT\TheCatAPI.json" --environment "D:\PROYECTO POSTMAN API CAT\ApiCatEnvironments.json" --iteration-data "D:\PROYECTO POSTMAN API CAT\cat_breeds.csv"
+* Generar el HTML EN LA CARPETA
+newman run "D:\PROYECTO POSTMAN API CAT\TheCatAPI.json" --environment "D:\PROYECTO POSTMAN API CAT\ApiCatEnvironments.json" --iteration-data "D:\PROYECTO POSTMAN API CAT\cat_breeds.csv" -r htmlextra --reporter-htmlextra-export "D:\PROYECTO POSTMAN API CAT\reporte-cat-final.html"
 
-# Cat API
-newman run cat-api/TheCatAPI.json \
-  --environment cat-api/ApiCatEnvironments.json \
-  --iteration-data cat-api/cat_breeds.csv \
-  -r htmlextra --reporter-htmlextra-export reports/reporte-cat.html
+# DOG API
+PS D:\PROYECTO CICD-DOCKER-POSTMAN\postman-api-testing> newman run "D:\PROYECTO POSTMAN DOG API\TheDogAPI.json" --environment "D:\PROYECTO POSTMAN DOG API\ApiDogEnvironments.json" --iteration-data "D:\PROYECTO POSTMAN DOG API\dog_breeds.csv"
+* Generar HTML
+newman run "D:\PROYECTO POSTMAN DOG API\TheDogAPI.json" --environment "D:\PROYECTO POSTMAN DOG API\ApiDogEnvironments.json" --iteration-data "D:\PROYECTO POSTMAN DOG API\dog_breeds.csv" -r htmlextra --reporter-htmlextra-export "D:\PROYECTO POSTMAN DOG API\reporte-dog-final.html"
 ```
 
 ## Lo que aprendí
